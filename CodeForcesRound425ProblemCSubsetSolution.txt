@@ -1,0 +1,106 @@
+/*
+ * By zhiyilearn, contest: Codeforces Round #415 (Div. 2), problem: (C) Do you want a date?, Time limit exceeded on test 6, #
+ * subset sloution even though not successful.
+ */
+import java.util.*;
+public class ProblemC {
+	public static void main(String[] argc)
+	{
+		Scanner sc = new Scanner(System.in);
+		int n;
+		n = sc.nextInt();
+		int[] numbers = new int[n];
+		for(int i = 0; i < n; i++)
+			numbers[i] = sc.nextInt();
+		
+		List<List<Integer>> res_List = subSet3(numbers);
+		
+		int sum = 0;
+		for(List com: res_List)
+		{
+			//System.out.println(com.toString());
+			if(com.size() > 0)
+			{
+				Integer maxVal = Integer.MIN_VALUE;
+				Integer minVal = Integer.MAX_VALUE;
+			
+				for(int i = 0; i < com.size(); i++)
+				{
+						if(maxVal < com.get(i).hashCode())
+						{
+							maxVal = com.get(i).hashCode();
+						}
+						
+						if(minVal > com.get(i).hashCode())
+						{
+							minVal = com.get(i).hashCode();
+						}
+				}
+				
+				sum += maxVal.intValue() - minVal.intValue();
+			}
+		}
+		System.out.println(sum);
+		
+	}
+	
+	public static List<List<Integer>> subSet(int[] numbers)
+	{
+		List<List<Integer>> list = new ArrayList<>();
+		Arrays.sort(numbers);
+		backtrack(list, new ArrayList<>(), numbers, 0);
+		return list;
+	}
+	
+	public static List<List<Integer>> subSet2(int[] numbers)
+	{
+	    	List<List<Integer>> res = new ArrayList<>();
+	    	res.add(new ArrayList<Integer>());
+	    	
+	    	for(int i = 0; i < numbers.length; i++)
+	    	{
+	    		int n = res.size();
+	    		//System.out.println(i + "\t" + n);;
+	    		for(int j = 0 ; j < n; j++)
+	    		{
+	    			List<Integer> tmp_List = new ArrayList(res.get(j));
+	    			tmp_List.add(numbers[i]);
+	    			res.add(tmp_List);
+	    		}
+	    		
+	    	}
+	    	
+	    	return res;
+	}
+	// Bit maniputation
+	public static List<List<Integer>> subSet3(int[] numbers)
+	{
+		List<List<Integer>> res_List= new ArrayList<>();
+		int n = numbers.length;
+		for (int b = 0; b < Math.pow(2,n); b++) {
+			List<Integer> tmp_List = new ArrayList<>();
+			int temp = b;
+			int count = 0;
+			while(temp != 0)
+			{
+				if(temp%2 == 1) {
+						tmp_List.add(numbers[count]);
+				}
+				count++;
+				temp /= 2;
+			}
+			res_List.add(tmp_List);
+		}
+		return res_List;
+	}
+	
+	public static void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] numbers, int start) {
+		list.add(new ArrayList<>(tempList));
+		for(int i = start; i < numbers.length; i++)
+		{
+			tempList.add(numbers[i]);
+			backtrack(list, tempList, numbers, i+1);
+			tempList.remove(tempList.size()-1);
+		}
+	}
+}
