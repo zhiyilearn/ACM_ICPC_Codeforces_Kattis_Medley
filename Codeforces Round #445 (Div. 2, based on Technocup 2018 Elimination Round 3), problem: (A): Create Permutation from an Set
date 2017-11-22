@@ -1,0 +1,65 @@
+/*
+* This spolution is an example to create a permutation from a set, for example, create 3 element permuation from 6 items.
+*/
+import java.util.*;
+public class ProblemA {
+
+    public static int base; //Total index from 0 to 5.
+    public static int nDigits;    // nDigits to select from
+    public static int[] code; //permutation currently built
+    public static boolean[] usedDigits; // true/false depending on whether digit has been used.
+    public static int[] a;
+    public static int sum;
+    public static boolean isYes;
+    public static void main(String[] argc)
+    {
+        Scanner sc = new Scanner(System.in);
+        a = new int[6];
+        sum = 0;
+        for(int i = 0; i < 6; i++)
+        {
+            a[i] = sc.nextInt();
+            sum += a[i];
+        }
+
+        // Genrerate a subset of 3 element index from 0 to 5
+        base = 6; //Total index from 0 to 5.
+        nDigits = 3;    // nDigits to select from
+        code = new int[nDigits];
+        usedDigits = new boolean[base];
+        isYes = false;
+        backtrack(0);
+        if(isYes == true)
+            System.out.println("Yes");
+        else
+            System.out.println("No");
+    }
+
+    public static void backtrack(int placed){
+        if(placed == code.length)
+        {
+            int sub_sum = 0;
+            for(int i = 0; i < code.length; i++)
+                sub_sum += a[code[i]];
+
+            if(sub_sum*2 == sum)
+                isYes = true;
+
+            return;
+        }
+
+        for (int digit = 0; digit < base; digit++)
+        {
+            if(usedDigits[digit])
+                continue;
+
+            code[placed] = digit; // extende partial solutuon
+
+            usedDigits[digit] = true;
+            backtrack(placed + 1);
+            usedDigits[digit] = false; // undo
+        }
+    }
+
+
+}
