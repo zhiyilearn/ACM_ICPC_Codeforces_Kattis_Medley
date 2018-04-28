@@ -1,0 +1,56 @@
+/*This problem is to detect cylce in a graph by DFS: Recursion version.
+PCS Link: Problem 202
+https://pcs.cs.cloud.vt.edu/problems/202
+*/
+import java.util.*;
+public class ProblemA {
+    static ArrayList<Integer> [] graph;
+    static int n, m;
+    static boolean[] visited;
+    public static void main(String[] argc){
+        Scanner sc = new Scanner(System.in);
+        int n, m ;
+        n = sc.nextInt();
+        m = sc.nextInt();
+        graph = new ArrayList[n];
+        for (int i = 0; i < n; i++)
+        {
+            graph[i] = new ArrayList<>();
+        }
+        for(int i = 0 ; i < m; i++)
+        {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+
+        visited = new boolean[n];
+
+        for(int c = 0; c < n; c++)
+        {
+                if( visited[c] == false) {
+
+                        cycle(c, -1);
+                }
+        }
+
+        System.out.println("Good");
+        return;
+
+    }
+
+    public static void cycle(int node, int parent)
+    {
+        if (visited[node] == true) {
+            System.out.println("Bad");
+            System.exit(0);
+        }
+        visited[node] = true;
+        for(int adj: graph[node])
+        {
+            if( adj != parent)
+                cycle(adj, node);
+        }
+    }
+}
