@@ -1,0 +1,65 @@
+// PCS PostLayout problem, inspired by BinarySearch algorithm.
+import java.util.*;
+public class ProblemD {
+    public static int[] posts;
+    public static void main(String[] argc)
+    {
+        Scanner sc = new Scanner(System.in);
+        int P, C;
+        P = sc.nextInt();
+        C = sc.nextInt();
+
+        posts = new int[P];
+        int largest_post = 0;
+        long sum = 0;
+        for(int i = 0; i < P; i++)
+        {
+            posts[i] = sc.nextInt();
+            largest_post = Math.max(largest_post, posts[i]);
+            sum += posts[i];
+        }
+
+        long low = largest_post;
+        long high = sum;
+
+        //for(int a = 1; a < 200; a++)
+        while(high > low)
+        {
+            long mid =(high +low)>>1;
+            if(fit(mid, P, C))
+            {
+                high = mid;
+            }
+            else
+            {
+                low = mid+1;
+            }
+        }
+        System.out.println(low);
+    }
+
+    public static boolean fit(long height, int p, int c)
+    {
+        int current = posts[0];
+        int column = 1;
+        for(int i = 1; i < p; i++)
+        {
+            current += 10;
+            if((current + posts[i]) <= height)
+            {
+                current += posts[i];
+            }
+            else //
+            {
+                current = posts[i];
+                column++;
+            }
+        }
+
+        if(column <= c)
+            return true;
+        else
+            return false;
+
+    }
+}
