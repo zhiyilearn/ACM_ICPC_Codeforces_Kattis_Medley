@@ -1,51 +1,48 @@
 /*
 @Author: Zhiyi Li
-@Version: 2019/03/09
+@Date: 2019/03/09 ProblemD Thanos The Hero
 */
 import java.util.*;
-public class ProblemD {
-    public static class Leg{
-        int from, to, height;
-        Legs(int from, int to, int height)
-        {
-            this.from = from;
-            this.to = to;
-            this.height = height;
-        }
-    }
-
+public class ProblemF {
     public static void main(String[] argc)
     {
         Scanner sc = new Scanner(System.in);
-        int N, K;
-        N = sc.nextInt();
-        K = sc.nextInt();
-
-        // Key:Index, Value: Height
-        Map<Integer,Leg> legs = new HashMap<>();
-
-        for(int i = 0; i < K; i++)
-        {
-            int from = sc.nextInt();
-            int to = from + 1;
-            int height = sc.nextInt();
-            legs.put(from, new Leg(from, to,height));
-        }
-
-        boolean[] vacate = new boolean[N];
-        Arrays.fill(vacate, true);
-        StringBuilder sb = new StringBuilder();
+        int N = sc.nextInt();
+        long[] population = new long[N];
         for(int i = 0; i < N; i++)
         {
-            int idx = i;
-            int height = 0;
-            boolean settleDown = false;
-            while(legs.containsKey(idx) && settleDown == false)
-            {
-                // Slide downward
-                int target = legs.
-                i
-            }
+            population[i] = sc.nextLong();
         }
+
+        boolean impossible = false;
+
+        if( N == 1)
+        {
+            System.out.println(0);
+            return;
+        }
+
+        int count = 0;
+        for(int i = N -2; i >= 0; i--)
+        {
+            // Compare i+1 and i elements
+            if(population[i+1] > population[i])
+                continue;
+
+            long expect_i = population[i+1] - 1;
+            if(expect_i < 0)
+            {
+                impossible = true;
+                break;
+            }
+
+            count += population[i] - expect_i;
+            population[i] = expect_i;
+        }
+
+        if(impossible == true)
+            System.out.println(1);
+        else
+            System.out.println(count);
     }
 }
